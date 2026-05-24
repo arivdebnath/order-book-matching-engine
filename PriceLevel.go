@@ -39,25 +39,25 @@ func (p *PriceLevel) CancelOrder(OrderId uint64) bool {
 		return false
 	}
 	p.TotalQty -= OrderNode.Order.Quantity
-	OrderNode.Order.Status = Canceled
-	p.RemoveNode(OrderNode.Order)
+	OrderNode.Order.Status = Cancelled
+	p.RemoveNode(OrderNode)
 	return true
 }
 
-func (p *PriceLevel) RemoveNode(order *Order) {
-	OrderNode := p.NodeIndex[order.ID]
-	if OrderNode.PrevOrder != nil {
-		OrderNode.PrevOrder.NextOrder = OrderNode.NextOrder
+func (p *PriceLevel) RemoveNode(orderNode *OrderNode) {
+
+	if orderNode.PrevOrder != nil {
+		orderNode.PrevOrder.NextOrder = orderNode.NextOrder
 	} else {
-		p.Head = OrderNode.NextOrder
+		p.Head = orderNode.NextOrder
 	}
-	if OrderNode.NextOrder != nil {
-		OrderNode.NextOrder.PrevOrder = OrderNode.PrevOrder
+	if orderNode.NextOrder != nil {
+		orderNode.NextOrder.PrevOrder = orderNode.PrevOrder
 	} else {
-		p.Tail = OrderNode.PrevOrder
+		p.Tail = orderNode.PrevOrder
 	}
-	OrderNode.PrevOrder = nil
-	OrderNode.NextOrder = nil
-	OrderNode.Order = nil
-	delete(p.NodeIndex, order.ID)
+	orderNode.PrevOrder = nil
+	orderNode.NextOrder = nil
+	delete(p.NodeIndex, orderNode.OrderID)
+	orderNode.Order = nil
 }
