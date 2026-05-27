@@ -6,11 +6,11 @@ type HalfOrderBook struct {
 	Side         Side
 	Levels       []*PriceLevel
 	bestPriceIdx int // -1 during initialization or for empty Levels
-	MinPrice     uint64
-	MaxPrice     uint64
+	MinPrice     int64
+	MaxPrice     int64
 }
 
-func NewHalfOrderBook(side Side, minPrice uint64, maxPrice uint64) (*HalfOrderBook, error) {
+func NewHalfOrderBook(side Side, minPrice int64, maxPrice int64) (*HalfOrderBook, error) {
 	size := maxPrice - minPrice + 1
 	if size <= 0 {
 		return nil, fmt.Errorf("MaxPrice is %d and MinPrice is %d", maxPrice, minPrice)
@@ -24,7 +24,7 @@ func NewHalfOrderBook(side Side, minPrice uint64, maxPrice uint64) (*HalfOrderBo
 	return hb, nil
 }
 
-func (hb *HalfOrderBook) priceToIdx(price uint64) (int, error) { // for price lookup
+func (hb *HalfOrderBook) priceToIdx(price int64) (int, error) { // for price lookup
 	if price < hb.MinPrice || price > hb.MaxPrice {
 		return -1, fmt.Errorf("price %d is out of range", price)
 	}
@@ -53,7 +53,7 @@ func (hb *HalfOrderBook) Add(order *Order) error {
 	return nil
 }
 
-func (hb *HalfOrderBook) CancelOrder(orderId uint64, price uint64) error {
+func (hb *HalfOrderBook) CancelOrder(orderId uint64, price int64) error {
 	if price < hb.MinPrice || price > hb.MaxPrice {
 		return fmt.Errorf("price %d is out of range", price)
 	}

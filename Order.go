@@ -6,7 +6,7 @@ type Order struct {
 	ID             uint64
 	Side           Side
 	Type           OrderType
-	Price          uint64 //will save it in cents
+	Price          int64 //will save it in cents
 	Quantity       uint64
 	FilledQuantity uint64
 	Status         OrderStatus
