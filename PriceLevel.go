@@ -1,7 +1,7 @@
 package order_book
 
 type PriceLevel struct {
-	Price     uint64
+	Price     int64
 	TotalQty  uint64 //aggregate quantity
 	Head      *OrderNode
 	Tail      *OrderNode
